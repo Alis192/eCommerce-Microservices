@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "OrlyYEm7RKQT+t9Oh+3aiuivOigo0NbF//jVgUGuRZmWF9vAIPk+9MfpJrlxFW37UmSl/51UfIGkDSNxWhQ7Mw==",
+  "dgSpecHash": "S9N7mkn/GStFrZa2LBO/6dCz2R4zqM3MVl5/b5zGYyZfI2i7I2IXaOa7q2VjPfc3/pShI3/a0TItUNOTn0JOwg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\alido\\source\\Microservice\\eCommerce\\ProductService\\ProductService.csproj",
+  "projectFilePath": "C:\\Users\\alido\\source\\Microservice\\eCommerce\\src\\ProductService\\ProductService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\alido\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\alido\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

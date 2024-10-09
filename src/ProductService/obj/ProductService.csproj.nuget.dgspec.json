@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\alido\\source\\Microservice\\eCommerce\\ProductService\\ProductService.csproj": {}
+    "C:\\Users\\alido\\source\\Microservice\\eCommerce\\src\\ProductService\\ProductService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\alido\\source\\Microservice\\eCommerce\\ProductService\\ProductService.csproj": {
+    "C:\\Users\\alido\\source\\Microservice\\eCommerce\\src\\ProductService\\ProductService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alido\\source\\Microservice\\eCommerce\\ProductService\\ProductService.csproj",
+        "projectUniqueName": "C:\\Users\\alido\\source\\Microservice\\eCommerce\\src\\ProductService\\ProductService.csproj",
         "projectName": "ProductService",
-        "projectPath": "C:\\Users\\alido\\source\\Microservice\\eCommerce\\ProductService\\ProductService.csproj",
+        "projectPath": "C:\\Users\\alido\\source\\Microservice\\eCommerce\\src\\ProductService\\ProductService.csproj",
         "packagesPath": "C:\\Users\\alido\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alido\\source\\Microservice\\eCommerce\\ProductService\\obj\\",
+        "outputPath": "C:\\Users\\alido\\source\\Microservice\\eCommerce\\src\\ProductService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\alido\\AppData\\Roaming\\NuGet\\NuGet.Config",
