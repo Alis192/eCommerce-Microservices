@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Contracts;
+using MassTransit;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProductService.Data;
@@ -12,9 +14,11 @@ namespace ProductService.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public ProductController(ApplicationDbContext context)
+        public ProductController(ApplicationDbContext context, IPublishEndpoint publishEndpoint)
         {
+            _publishEndpoint= publishEndpoint;
             _context = context;
         }
 
@@ -82,7 +86,7 @@ namespace ProductService.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> PostProduct(CreateProductDTO createProductDTO)
         {
-            var product = new Product
+                var product = new Product
             {
                 Id = Guid.NewGuid(),  // Generate a new GUID for each product
                 Name = createProductDTO.Name,
@@ -93,6 +97,15 @@ namespace ProductService.Controllers
 
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
+
+            await _publishEndpoint.Publish(new ProductCreated(
+                product.Id,
+                product.Name,
+                product.Description,
+                product.Price,
+                product.StockQuantity
+            ));
+
 
             var productDTO = new ProductDTO
             {

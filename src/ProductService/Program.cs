@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using ProductService.Data;
 
@@ -8,6 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 // STEP 1: Configure Entity Framework and SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Configure MassTransit
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h => { });
+    });
+});
+
 
 // STEP 2: Add Controllers and Swagger for API Documentation
 builder.Services.AddControllers();
