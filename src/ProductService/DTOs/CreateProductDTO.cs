@@ -5,10 +5,10 @@ namespace ProductService.DTOs
     public class CreateProductDTO
     {
         [Required]
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
         [Required]
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0.")]
         public double Price { get; set; }
