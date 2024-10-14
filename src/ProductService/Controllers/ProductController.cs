@@ -103,6 +103,15 @@ namespace ProductService.Controllers
                 _context.Entry(product).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
 
+                // Publish the ProductUpdated event
+                await _publishEndpoint.Publish(new ProductUpdated(
+                    product.Id,
+                    product.Name,
+                    product.Description,
+                    product.Price,
+                    product.StockQuantity
+                ));
+
                 return NoContent();
             }
             catch(Exception ex)
@@ -180,6 +189,9 @@ namespace ProductService.Controllers
 
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
+
+                // Publish the ProductDeleted event
+                await _publishEndpoint.Publish(new ProductDeleted(product.Id));
 
                 return NoContent();
             }

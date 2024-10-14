@@ -1,5 +1,6 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using SearchService.Consumers;
 using SearchService.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,8 @@ builder.Services.AddDbContext<SearchDbContext>(options =>
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<ProductCreatedConsumer>();
+    x.AddConsumer<ProductUpdatedConsumer>(); 
+    x.AddConsumer<ProductDeletedConsumer>(); 
 
     x.UsingRabbitMq((context, cfg) =>
     {
@@ -22,6 +25,16 @@ builder.Services.AddMassTransit(x =>
         cfg.ReceiveEndpoint("product-created-queue", e =>
         {
             e.ConfigureConsumer<ProductCreatedConsumer>(context);
+        });
+
+        cfg.ReceiveEndpoint("product-updated-queue", e =>
+        {
+            e.ConfigureConsumer<ProductUpdatedConsumer>(context);
+        });
+
+        cfg.ReceiveEndpoint("product-deleted-queue", e =>
+        {
+            e.ConfigureConsumer<ProductDeletedConsumer>(context);
         });
     });
 });
