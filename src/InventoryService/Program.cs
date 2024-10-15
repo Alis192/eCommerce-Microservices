@@ -21,6 +21,11 @@ builder.Services.AddMassTransit(x =>
         {
             e.ConfigureConsumer<ProductCreatedConsumer>(context);
         });
+
+        cfg.ReceiveEndpoint("inventory-product-sold", e =>
+        {
+            e.ConfigureConsumer<ProductSoldConsumer>(context);
+        });
     });
 });
 

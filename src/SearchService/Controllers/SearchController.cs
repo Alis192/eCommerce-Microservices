@@ -1,56 +1,49 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SearchService.Data;
-using SearchService.Models;
+﻿    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using SearchService.Data;
+    using SearchService.Models;
 
-namespace SearchService.Controllers
-{
-    [ApiController]
-    [Route("api/[controller]")]
-    public class SearchController : ControllerBase
+    namespace SearchService.Controllers
     {
-        private readonly SearchDbContext _dbContext;
-
-        public SearchController(SearchDbContext dbContext)
+        [ApiController]
+        [Route("api/[controller]")]
+        public class SearchController : ControllerBase
         {
-            _dbContext = dbContext;
-        }
+            private readonly SearchDbContext _dbContext;
 
-        // GET: api/search?query=example&minPrice=10&maxPrice=100
-        [HttpGet]
-        public async Task<IActionResult> Search([FromQuery] string? query, [FromQuery] double? minPrice, [FromQuery] double? maxPrice)
-        {
-            // Fetch all products if no filters are applied
-            if (string.IsNullOrEmpty(query) && !minPrice.HasValue && !maxPrice.HasValue)
+            public SearchController(SearchDbContext dbContext)
             {
-                var allProducts = await _dbContext.Products.ToListAsync();
-                return Ok(allProducts);
+                _dbContext = dbContext;
             }
 
-            // Start building query
-            var productsQuery = _dbContext.Products.AsQueryable();
-
-            // Filter by query if provided
-            if (!string.IsNullOrEmpty(query))
+            // GET: api/search?query=example&minPrice=10&maxPrice=100
+            [HttpGet]
+            public async Task<IActionResult> Search([FromQuery] string? query, [FromQuery] double? minPrice, [FromQuery] double? maxPrice, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
             {
-                productsQuery = productsQuery.Where(p => p.Name.Contains(query) || p.Description.Contains(query));
-            }
+                // Start building query
+                var productsQuery = _dbContext.Products.AsQueryable();
 
-            // Filter by minPrice if provided
-            if (minPrice.HasValue)
-            {
-                productsQuery = productsQuery.Where(p => p.Price >= minPrice.Value);
-            }
+                // Apply search filters if provided
+                if (!string.IsNullOrEmpty(query))
+                {
+                    productsQuery = productsQuery.Where(p => p.Name.Contains(query) || p.Description.Contains(query));
+                }
+                if (minPrice.HasValue)
+                {
+                    productsQuery = productsQuery.Where(p => p.Price >= minPrice.Value);
+                }
+                if (maxPrice.HasValue)
+                {
+                    productsQuery = productsQuery.Where(p => p.Price <= maxPrice.Value);
+                }
 
-            // Filter by maxPrice if provided
-            if (maxPrice.HasValue)
-            {
-                productsQuery = productsQuery.Where(p => p.Price <= maxPrice.Value);
-            }
+                // Apply pagination
+                var pagedResult = await productsQuery
+                    .Skip((pageNumber - 1) * pageSize)  // Apply skip for pagination
+                    .Take(pageSize)                    // Limit to page size
+                    .ToListAsync();
 
-            // Execute query and return results
-            var products = await productsQuery.ToListAsync();
-            return Ok(products);
+                return Ok(pagedResult);  // Return paged result
+            }
         }
     }
-}

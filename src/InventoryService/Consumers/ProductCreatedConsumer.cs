@@ -20,7 +20,7 @@ namespace InventoryService.Consumers
             var inventoryItem = new InventoryItem
             {
                 ProductId = context.Message.Id,
-                StockQuantity = 0 // Default starting stock
+                StockQuantity = context.Message.StockQuantity 
             };
 
             _dbContext.InventoryItems.Add(inventoryItem);
